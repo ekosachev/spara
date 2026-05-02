@@ -1,6 +1,8 @@
 services:
   db:
-    build: ./db
+    build:
+      context: .
+      dockerfile: db.dockerfile
     container_name: spara_db
     environment:
       POSTGRES_USER: ${DB_USER}
@@ -18,7 +20,9 @@ services:
       start_period: 10s
 
   backend:
-    build: ./back/back.dockerfile
+    build: 
+      context: ./back/
+      dockerfile: back.dockerfile
     container_name: spara_backend
     ports:
       - "${GIN_PORT}:${APP_PORT}"
