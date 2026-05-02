@@ -7,9 +7,9 @@ import (
 )
 
 type BaseServise[T any] struct {
-	Repo repositories.BaseRepository[T]
+	repo repositories.BaseRepository[T]
 }
 
 func (s *BaseServise[T]) Create(ctx context.Context, dto T) error {
-	return s.Repo.Create(ctx, dto)
+	return s.repo.Create(ctx, dto)
 }
