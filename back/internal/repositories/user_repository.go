@@ -18,10 +18,12 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 
 func (r *UserRepository) Create(ctx context.Context, dto dto.User) error {
 	return r.db.Model(models.User{}).WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return tx.Create(models.User{
+		user := models.User{
 			Email:        dto.Email,
 			Username:     dto.Username,
 			PasswordHash: dto.PasswordHash,
-		}).Error
+		}
+
+		return tx.Create(&user).Error
 	})
 }
