@@ -10,6 +10,6 @@ type Model struct {
 
 type ApiResponse struct {
 	Success bool   `json:"success"`
-	Error   string `json:"error" binding:"omitempty"`
-	Data    any    `json:"data" binding:"omitempty"`
+	Error   string `json:"error,omitempty"`
+	Data    any    `json:"data,omitempty"`
 }
