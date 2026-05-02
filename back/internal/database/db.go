@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/ekosachev/spara/internal/config"
+	"github.com/ekosachev/spara/internal/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -25,7 +26,7 @@ func ConnectToDb() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	db.AutoMigrate()
+	db.AutoMigrate(models.User{})
 
 	return db, nil
 }
