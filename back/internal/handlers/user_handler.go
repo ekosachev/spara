@@ -18,7 +18,7 @@ func NewUserHandler(service services.UserService, logger *slog.Logger) UserHandl
 	return UserHandler{service, logger}
 }
 
-func (h *UserHandler) RegisterRoutes(group gin.RouterGroup, prefix string) {
+func (h *UserHandler) RegisterRoutes(group *gin.RouterGroup, prefix string) {
 	routerGroup := group.Group(prefix)
 
 	{
