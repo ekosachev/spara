@@ -2,7 +2,7 @@ package repositories
 
 import "context"
 
-type BaseRepository[T interface{}] interface {
+type BaseRepository[T any] interface {
 	Create(ctx context.Context, dto *T) error
 	GetAll(ctx context.Context) ([]T, error)
 	GetByID(ctx context.Context, id uint) (*T, error)
