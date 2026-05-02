@@ -34,11 +34,13 @@ func (h *UserHandler) create(c *gin.Context) {
 		return
 	}
 
-	if err := h.service.Create(c, dto.User{
+	user, err := h.service.Create(c, dto.User{
 		Email:        req.Email,
 		Username:     req.Username,
-		PasswordHash: req.Password, // implement hashing later
-	}); err != nil {
+		PasswordHash: req.Password, // TODO: implement hashing
+	})
+
+	if err != nil {
 		h.logger.Error("Failed to create user", slog.String("error", err.Error()))
 		sendError(c, http.StatusInternalServerError, "Internal server error")
 		return
@@ -46,6 +48,10 @@ func (h *UserHandler) create(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dto.ApiResponse{
 		Success: true,
-		Data:    "User created",
+		Data: dto.UserResponse{
+			ID:       user.ID,
+			Email:    user.Email,
+			Username: user.Username,
+		},
 	})
 }
