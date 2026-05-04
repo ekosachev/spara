@@ -16,7 +16,7 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 	return UserRepository{db}
 }
 
-func (r *UserRepository) Create(ctx context.Context, user dto.User) (*dto.User, error) {
+func (r UserRepository) Create(ctx context.Context, user dto.User) (*dto.User, error) {
 	userModel := models.User{
 		Email:        user.Email,
 		Username:     user.Username,
@@ -40,4 +40,24 @@ func (r *UserRepository) Create(ctx context.Context, user dto.User) (*dto.User, 
 			PasswordHash: userModel.PasswordHash,
 		}, nil
 	}
+}
+
+func (r UserRepository) GetByEmail(ctx context.Context, email string) (*dto.User, error) {
+
+	userModel, err := gorm.G[models.User](r.db).Where(models.User{Email: email}).First(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.User{
+		Model: dto.Model{
+			ID:        userModel.ID,
+			CreatedAt: userModel.CreatedAt,
+			UpdatedAt: userModel.UpdatedAt,
+		},
+		Username:     userModel.Username,
+		Email:        userModel.Email,
+		PasswordHash: userModel.PasswordHash,
+	}, nil
 }

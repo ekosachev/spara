@@ -10,11 +10,13 @@ import (
 
 type UserService struct {
 	BaseServise[dto.User]
+	repo repositories.UserRepository
 }
 
-func NewUserService(repo repositories.BaseRepository[dto.User]) UserService {
+func NewUserService(repo repositories.UserRepository) UserService {
 	return UserService{
 		BaseServise: BaseServise[dto.User]{repo: repo},
+		repo:        repo,
 	}
 }
 
@@ -31,4 +33,8 @@ func (s *UserService) Create(ctx context.Context, user dto.User) (*dto.User, err
 		PasswordHash: hashedPassword,
 		Username:     user.Username,
 	})
+}
+
+func (s *UserService) GetByEmail(ctx context.Context, email string) (*dto.User, error) {
+	return s.repo.GetByEmail(ctx, email)
 }
