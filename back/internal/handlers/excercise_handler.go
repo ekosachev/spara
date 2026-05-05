@@ -1,12 +1,9 @@
 package handlers
 
 import (
-	"log/slog"
-	"net/http"
-
-	"github.com/ekosachev/spara/internal/dto"
 	"github.com/ekosachev/spara/internal/services"
 	"github.com/gin-gonic/gin"
+	"log/slog"
 )
 
 type ExcerciseHandler struct {
