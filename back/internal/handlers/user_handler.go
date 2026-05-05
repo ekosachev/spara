@@ -37,7 +37,7 @@ func (h *UserHandler) create(c *gin.Context) {
 	user, err := h.service.Create(c, dto.User{
 		Email:        req.Email,
 		Username:     req.Username,
-		PasswordHash: req.Password, // TODO: implement hashing
+		PasswordHash: req.Password,
 	})
 
 	if err != nil {
