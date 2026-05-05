@@ -15,8 +15,8 @@ type TrainingPlanHandler struct {
 	logger  *slog.Logger
 }
 
-func NewTrainingPlanHandler(service *services.ExcerciseService, logger *slog.Logger) ExcerciseHandler {
-	return ExcerciseHandler{service, logger}
+func NewTrainingPlanHandler(service *services.TrainingPlanServcie, logger *slog.Logger) TrainingPlanHandler {
+	return TrainingPlanHandler{service, logger}
 }
 
 func (h *TrainingPlanHandler) RegisterRoutes(group *gin.RouterGroup, prefix string) {
