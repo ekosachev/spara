@@ -9,4 +9,6 @@ type User struct {
 	Email        string `gorm:"uniqueIndex"`
 	Username     string
 	PasswordHash string
+
+	TrainingPlans []TrainingPlan
 }
