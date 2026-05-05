@@ -24,6 +24,12 @@ func main() {
 		return
 	}
 
+	excerciseRepo := repositories.NewExcerciseRepository(db)
+
+	if err := database.Seed(&excerciseRepo); err != nil {
+		logger.Error("Failed to seed database", slog.String("error", err.Error()))
+	}
+
 	globalApi := r.Group("/api")
 
 	v1Group := globalApi.Group("/v1")
