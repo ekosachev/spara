@@ -12,7 +12,7 @@ type ExcerciseRepository struct {
 	db *gorm.DB
 }
 
-func dtoFromModel(model models.Excercise) dto.Excercise {
+func excerciseDtoFromModel(model models.Excercise) dto.Excercise {
 	return dto.Excercise{
 		Model: dto.Model{
 			ID:        model.ID,
@@ -40,7 +40,7 @@ func (r ExcerciseRepository) Create(ctx context.Context, excercise dto.Excercise
 	if err != nil {
 		return nil, err
 	} else {
-		dto := dtoFromModel(exceciseModel)
+		dto := excerciseDtoFromModel(exceciseModel)
 		return &dto, nil
 	}
 }
@@ -51,7 +51,7 @@ func (r ExcerciseRepository) GetByName(ctx context.Context, name string) (*dto.E
 	if err != nil {
 		return nil, err
 	} else {
-		dto := dtoFromModel(excercise)
+		dto := excerciseDtoFromModel(excercise)
 		return &dto, nil
 	}
 }
