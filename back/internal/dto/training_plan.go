@@ -2,12 +2,19 @@ package dto
 
 type TrainingPlan struct {
 	Model
-	Name   string
-	UserID uint
+	Name       string
+	UserID     uint
+	Excercises []TrainingPlanExcercise
+}
+
+type TrainingPlanExcercise struct {
+	Order       int `json:"order" binding:"required"`
+	ExcerciseID int `json:"excercise_id" binding:"required"`
 }
 
 type CreateTrainingPlanRequest struct {
-	Name string `json:"name" binding:"required"`
+	Name       string                  `json:"name" binding:"required"`
+	Excercises []TrainingPlanExcercise `json:"excercises" binding:"omitempty"`
 }
 
 type TrainingPlanResponse struct {
