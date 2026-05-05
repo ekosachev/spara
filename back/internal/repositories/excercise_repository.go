@@ -55,3 +55,14 @@ func (r ExcerciseRepository) GetByName(ctx context.Context, name string) (*dto.E
 		return &dto, nil
 	}
 }
+
+func (r ExcerciseRepository) GetByID(ctx context.Context, id uint) (*dto.Excercise, error) {
+	excerciseModel, err := gorm.G[models.Excercise](r.db).Where("id = ?", id).First(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	dto := excerciseDtoFromModel(excerciseModel)
+	return &dto, nil
+}

@@ -44,3 +44,14 @@ func (r TrainingPlanRepository) Create(ctx context.Context, trainingPlan dto.Tra
 		return &dto, nil
 	}
 }
+
+func (r TrainingPlanRepository) GetByID(ctx context.Context, id uint) (*dto.TrainingPlan, error) {
+	trainingPlanModel, err := gorm.G[models.TrainingPlan](r.db).Where("id = ?", id).First(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	dto := trainingPlanDtoFromModel(trainingPlanModel)
+	return &dto, nil
+}
