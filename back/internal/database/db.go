@@ -26,7 +26,7 @@ func ConnectToDb() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	db.AutoMigrate(models.User{})
+	db.AutoMigrate(models.User{}, models.Excercise{})
 
 	return db, nil
 }
