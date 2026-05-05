@@ -47,5 +47,16 @@ func (h *AuthHandler) login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, dto.ApiResponse{Success: true})
+	token, err := utils.GenerateToken(user.ID)
+
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Internal server error")
+		h.logger.Error("Failed to generate JWT token", slog.String("error", err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.ApiResponse{
+		Success: true,
+		Data:    dto.LoginResponse{Token: token},
+	})
 }
