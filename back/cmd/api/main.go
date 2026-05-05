@@ -29,8 +29,10 @@ func main() {
 	v1Group := globalApi.Group("/v1")
 
 	userRepo := repositories.NewUserRepository(db)
-	userService := services.NewUserService(&userRepo)
-	userHandler := handlers.NewUserHandler(userService, logger)
+	userService := services.NewUserService(userRepo)
+	userHandler := handlers.NewUserHandler(&userService, logger)
+
+	authHandler := handlers.NewAuthHandler(&userService, logger)
 
 	{
 		v1Group.GET("/health", func(ctx *gin.Context) {
@@ -38,6 +40,7 @@ func main() {
 		})
 
 		userHandler.RegisterRoutes(v1Group, "/user")
+		authHandler.RegisterRoutes(v1Group, "/auth")
 	}
 
 	r.Run()
