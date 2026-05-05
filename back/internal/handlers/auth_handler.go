@@ -38,7 +38,7 @@ func (h *AuthHandler) login(c *gin.Context) {
 	user, err := h.userService.GetByEmail(c, req.Email)
 
 	if err != nil {
-		sendError(c, http.StatusNotFound, "Incorrect email or password")
+		sendError(c, http.StatusUnauthorized, "Incorrect email or password")
 		return
 	}
 
