@@ -37,7 +37,7 @@ func main() {
 	v1Group := globalApi.Group("/v1")
 
 	userService := services.NewUserService(userRepo)
-	trainingPlanService := services.NewTrainingPlanService(trainingPlanRepo, userRepo)
+	trainingPlanService := services.NewTrainingPlanService(trainingPlanRepo, userRepo, excerciseRepo)
 
 	userHandler := handlers.NewUserHandler(&userService, logger)
 	authHandler := handlers.NewAuthHandler(&userService, logger)

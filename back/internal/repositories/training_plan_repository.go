@@ -37,12 +37,46 @@ func (r TrainingPlanRepository) Create(ctx context.Context, trainingPlan dto.Tra
 		return tx.Create(&trainingPlanModel).Error
 	})
 
+	trainingPlanExcerciseModels := make([]models.TrainingPlanExcercises, len(trainingPlan.Excercises))
+
+	for i, v := range trainingPlan.Excercises {
+		trainingPlanExcerciseModel := models.TrainingPlanExcercises{
+			TrainingPlanID: int(trainingPlanModel.ID),
+			ExcerciseID:    v.ExcerciseID,
+			Order:          v.Order,
+		}
+
+		err := gorm.G[models.TrainingPlanExcercises](r.db).Create(ctx, &trainingPlanExcerciseModel)
+
+		if err != nil {
+			return nil, err
+		}
+
+		trainingPlanExcerciseModels[i] = trainingPlanExcerciseModel
+	}
+
 	if err != nil {
 		return nil, err
-	} else {
-		dto := trainingPlanDtoFromModel(trainingPlanModel)
-		return &dto, nil
 	}
+
+	trainingPlanDTO := trainingPlanDtoFromModel(trainingPlanModel)
+
+	// trainingPlanDTO.Excercises = trainingPlan.Excercises
+	excercises, err := gorm.G[models.TrainingPlanExcercises](r.db).Where("training_plan_id = ?", trainingPlanModel.ID).Find(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	trainingPlanDTO.Excercises = make([]dto.TrainingPlanExcercise, len(excercises))
+	for i, e := range excercises {
+		trainingPlanDTO.Excercises[i] = dto.TrainingPlanExcercise{
+			ExcerciseID: e.ExcerciseID,
+			Order:       e.Order,
+		}
+	}
+
+	return &trainingPlanDTO, nil
 }
 
 func (r TrainingPlanRepository) GetByID(ctx context.Context, id uint) (*dto.TrainingPlan, error) {

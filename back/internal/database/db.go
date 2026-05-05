@@ -30,6 +30,16 @@ func ConnectToDb() (*gorm.DB, error) {
 		models.User{},
 		models.Excercise{},
 		models.TrainingPlan{},
+		models.TrainingPlanExcercises{},
+	)
+
+	err = db.SetupJoinTable(&models.TrainingPlan{}, "Excercices", &models.TrainingPlanExcercises{})
+	if err != nil {
+		return nil, err
+	}
+
+	db.AutoMigrate(
+		models.TrainingPlanExcercises{},
 	)
 
 	return db, nil

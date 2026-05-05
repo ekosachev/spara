@@ -39,7 +39,7 @@ func (h *TrainingPlanHandler) create(c *gin.Context) {
 
 	userID := c.GetUint("userID")
 
-	trainingPlan, err := h.service.Create(c, dto.TrainingPlan{Name: req.Name, UserID: userID})
+	trainingPlan, err := h.service.Create(c, dto.TrainingPlan{Name: req.Name, UserID: userID, Excercises: req.Excercises})
 
 	if err != nil {
 		sendError(c, http.StatusInternalServerError, "Internal server error")
