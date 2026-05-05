@@ -13,3 +13,7 @@ type BaseServise[T any] struct {
 func (s *BaseServise[T]) Create(ctx context.Context, dto T) (*T, error) {
 	return s.repo.Create(ctx, dto)
 }
+
+func (s *BaseServise[T]) GetByID(ctx context.Context, id uint) (*T, error) {
+	return s.repo.GetByID(ctx, id)
+}
