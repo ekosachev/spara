@@ -25,6 +25,8 @@ func main() {
 	}
 
 	excerciseRepo := repositories.NewExcerciseRepository(db)
+	userRepo := repositories.NewUserRepository(db)
+	trainingPlanRepo := repositories.NewTrainingPlanRepository(db)
 
 	if err := database.Seed(&excerciseRepo); err != nil {
 		logger.Error("Failed to seed database", slog.String("error", err.Error()))
@@ -34,11 +36,12 @@ func main() {
 
 	v1Group := globalApi.Group("/v1")
 
-	userRepo := repositories.NewUserRepository(db)
 	userService := services.NewUserService(userRepo)
-	userHandler := handlers.NewUserHandler(&userService, logger)
+	trainingPlanService := services.NewTrainingPlanService(trainingPlanRepo, userRepo)
 
+	userHandler := handlers.NewUserHandler(&userService, logger)
 	authHandler := handlers.NewAuthHandler(&userService, logger)
+	trainingPlanHandler := handlers.NewTrainingPlanHandler(&trainingPlanService, logger)
 
 	{
 		v1Group.GET("/health", func(ctx *gin.Context) {
@@ -47,6 +50,7 @@ func main() {
 
 		userHandler.RegisterRoutes(v1Group, "/user")
 		authHandler.RegisterRoutes(v1Group, "/auth")
+		trainingPlanHandler.RegisterRoutes(v1Group, "/training_plan")
 	}
 
 	r.Run()
