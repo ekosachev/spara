@@ -9,12 +9,18 @@ import (
 	"github.com/ekosachev/spara/internal/handlers"
 	"github.com/ekosachev/spara/internal/repositories"
 	"github.com/ekosachev/spara/internal/services"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 
 	r := gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://localhost:3000"},
+		AllowMethods: []string{"GET", "PUT", "POST", "DELETE", "OPTIONS"},
+		AllowHeaders: []string{"Content-Type", "Authorization"},
+	}))
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
 	db, err := database.ConnectToDb()
