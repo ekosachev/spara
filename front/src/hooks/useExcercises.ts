@@ -5,9 +5,6 @@ import { Excercise } from "@/types";
 export const useExcercises = () => {
     return useQuery<Excercise[]>({
         queryKey: ['excercises'],
-        queryFn: async () => {
-            const { data } = await api.get('/api/v1/excercises');
-            return data
-        }
+        queryFn: () => api.get('/excercises'),
     })
 }
