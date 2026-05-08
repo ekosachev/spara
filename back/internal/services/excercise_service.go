@@ -1,6 +1,8 @@
 package services
 
 import (
+	"context"
+
 	"github.com/ekosachev/spara/internal/dto"
 	"github.com/ekosachev/spara/internal/repositories"
 )
@@ -15,4 +17,8 @@ func NewExcerciseRepository(repo repositories.ExcerciseRepository) ExcerciseServ
 		BaseServise: BaseServise[dto.Excercise]{repo: repo},
 		repo:        repo,
 	}
+}
+
+func (s *ExcerciseService) GetAll(ctx context.Context) ([]dto.Excercise, error) {
+	return s.repo.GetAll(ctx)
 }
