@@ -22,7 +22,7 @@ func (h *ExcerciseHandler) RegisterRoutes(group *gin.RouterGroup, prefix string)
 	localGroup := group.Group(prefix)
 
 	{
-		localGroup.GET("/", h.getAll)
+		localGroup.GET("", h.getAll)
 	}
 }
 
