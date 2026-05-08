@@ -12,7 +12,7 @@ type ExcerciseService struct {
 	repo repositories.ExcerciseRepository
 }
 
-func NewExcerciseRepository(repo repositories.ExcerciseRepository) ExcerciseService {
+func NewExcerciseService(repo repositories.ExcerciseRepository) ExcerciseService {
 	return ExcerciseService{
 		BaseServise: BaseServise[dto.Excercise]{repo: repo},
 		repo:        repo,
