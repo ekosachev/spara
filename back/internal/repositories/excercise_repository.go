@@ -66,3 +66,20 @@ func (r ExcerciseRepository) GetByID(ctx context.Context, id uint) (*dto.Excerci
 	dto := excerciseDtoFromModel(excerciseModel)
 	return &dto, nil
 }
+
+func (r ExcerciseRepository) GetAll(ctx context.Context) ([]dto.Excercise, error) {
+	var excerciseModels []models.Excercise
+
+	excerciseModels, err := gorm.G[models.Excercise](r.db).Find(ctx)
+	if err != nil {
+		return []dto.Excercise{}, err
+	}
+
+	excercises := make([]dto.Excercise, len(excerciseModels))
+
+	for i, ex := range excerciseModels {
+		excercises[i] = excerciseDtoFromModel(ex)
+	}
+
+	return excercises, nil
+}
