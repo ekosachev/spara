@@ -18,7 +18,7 @@ export const useAuth = () => {
     const registerMutation = useMutation({
         mutationFn: (data: RegisterInput) => api.post("/user", data),
         onSuccess: () => {
-            router.push("/login")
+            router.push("/auth/login")
         }
     })
 
