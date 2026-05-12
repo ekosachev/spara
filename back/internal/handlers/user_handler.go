@@ -22,7 +22,7 @@ func (h *UserHandler) RegisterRoutes(group *gin.RouterGroup, prefix string) {
 	routerGroup := group.Group(prefix)
 
 	{
-		routerGroup.POST("/", h.create)
+		routerGroup.POST("", h.create)
 	}
 }
 
