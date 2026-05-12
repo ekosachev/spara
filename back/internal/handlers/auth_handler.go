@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/ekosachev/spara/internal/dto"
+	"github.com/ekosachev/spara/internal/middleware"
 	"github.com/ekosachev/spara/internal/services"
 	"github.com/ekosachev/spara/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,11 @@ func (h *AuthHandler) RegisterRoutes(group *gin.RouterGroup, prefix string) {
 
 	{
 		routerGroup.POST("/login", h.login)
+
+		protectedGroup := routerGroup.Group("").Use(middleware.AuthMiddleware())
+		{
+			protectedGroup.GET("/me", h.me)
+		}
 	}
 }
 
@@ -58,5 +64,30 @@ func (h *AuthHandler) login(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.ApiResponse{
 		Success: true,
 		Data:    dto.LoginResponse{Token: token},
+	})
+}
+
+func (h *AuthHandler) me(c *gin.Context) {
+	userID, exists := c.Get("userID")
+
+	if !exists {
+		sendError(c, http.StatusUnauthorized, "User ID not found")
+		return
+	}
+
+	user, err := h.userService.GetByID(c, uint(userID.(float64)))
+
+	if err != nil {
+		sendError(c, http.StatusNotFound, "User does not exist")
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.ApiResponse{
+		Success: true,
+		Data: dto.UserResponse{
+			ID:       user.ID,
+			Email:    user.Email,
+			Username: user.Username,
+		},
 	})
 }
